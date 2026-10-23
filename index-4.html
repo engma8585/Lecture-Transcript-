@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1730">
+<meta name="description" content="Private English lecture transcription with automatic audio chunking and Word export.">
+<title>Lecture Transcript – Long Audio to Word</title>
+<style>
+:root{color-scheme:dark;--bg:#091327;--panel:#12203a;--line:#304461;--muted:#b4c8e3;--text:#eff8ff;--cyan:#58d5e4}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#203d61,transparent 44%),var(--bg);font:15px/1.7 system-ui,Tahoma,sans-serif;color:var(--text)}main{max-width:780px;padding:30px 15px 56px;margin:auto}.eye{color:#72e4ee;font:bold 12px system-ui;letter-spacing:.7px;direction:ltr;text-align:left}h1{font-size:clamp(23px,5vw,35px);margin:8px 0}h2{font-size:17px;margin:0 0 14px}.intro,.note{color:var(--muted)}.intro{font-size:14px;margin:0 0 20px}.card{background:#14223b;border:1px solid var(--line);border-radius:16px;margin-bottom:15px;padding:18px;box-shadow:0 9px 28px #0002}.upload{border:2px dashed #5377a1;background:#1b304e;border-radius:12px;display:block;text-align:center;padding:25px 10px;position:relative;cursor:pointer}.upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.upload strong{display:block;font-size:17px}.upload span{color:var(--muted);font-size:12px}.filemeta{overflow-wrap:anywhere;margin:10px 0;color:#cfe5ff;font-size:13px}audio{width:100%;margin-top:9px;display:none}button,select{font:inherit;border:1px solid #436183;background:#233758;color:var(--text);border-radius:10px;padding:10px;min-height:45px}button{cursor:pointer;font-weight:650}button:disabled{opacity:.45;cursor:not-allowed}.primary{width:100%;background:linear-gradient(90deg,#4270ea,#2d9cbd);border:0;color:white;margin-top:10px}.stop{background:#49263c;width:100%;margin-top:8px}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.actions button{flex:1;min-width:105px}#docx{border:1px solid #3fbfa7;background:#17463f;color:#edfff8}select{width:100%;margin:8px 0 4px}label.pref{display:block;margin:8px 0 2px;font-weight:600;font-size:13px}.note{font-size:12px;line-height:1.9;margin:10px 0 0}.status{color:#d9ecff;line-height:1.9;white-space:pre-line;overflow-wrap:anywhere}progress{width:100%;margin-top:12px;height:13px;accent-color:#3acaa8;display:none}textarea{width:100%;min-height:220px;background:#0b172a;color:#f5fbff;border:1px solid #536d8d;border-radius:10px;line-height:1.75;font:14px/1.75 system-ui;padding:12px;direction:ltr;text-align:left;resize:vertical}.pill{display:inline-block;padding:2px 8px;color:#84f3e0;background:#20483f;border:1px solid #34766b;border-radius:15px;font:12px system-ui}footer{color:var(--muted);font-size:12px;line-height:1.9;text-align:center}.warning{color:#f6d3ac}@media(max-width:380px){main{padding:18px 10px}.card{padding:13px}}
+</style>
+</head>
+<body><main>
+<div class="eye">PRIVATE · ENGLISH ONLY · LONG AUDIO · WORD DOCX</div>
+<h1>🎧 تفريغ المحاضرات الإنجليزية</h1>
+<p class="intro">اختار تسجيل من موبايلك — حتى لو مدته ساعة — والتطبيق يقرأه على أجزاء ويجمع النص. تقدر تنزّل النتيجة ملف <b>Word (.docx)</b> أو TXT أو SRT.</p>
+<section class="card">
+<h2>① التسجيل والخيارات</h2>
+<label class="upload"><input id="audiofile" type="file" accept="audio/*,.m4a,.mp4,.mp3,.wav,.webm,.ogg,.aac,.flac"><strong>📁 اختار التسجيل من الموبايل</strong><span>M4A · MP3 · WAV · MP4 · حسب دعم المتصفح والترميز</span></label>
+<div class="filemeta" id="filemeta">لم يتم اختيار ملف</div><audio id="preview" controls preload="metadata"></audio>
+<label class="pref" for="model">دقة التفريغ (الإنجليزية فقط)</label>
+<select id="model"><option value="Xenova/whisper-tiny.en">سريع – Tiny English (أنسب للموبايل)</option><option value="Xenova/whisper-base.en">دقة أعلى – Base English (أبطأ ويستخدم ذاكرة أكبر)</option></select>
+<button id="start" class="primary" disabled>▶ ابدأ التفريغ / استكمل المحاضرة</button>
+<button id="stop" class="stop" disabled>⏹ إيقاف بعد الجزء الحالي</button>
+<p class="note">أول تشغيل يحتاج الإنترنت لتنزيل نموذج Whisper. يقرأ التسجيل بشكل تدريجي، في مقاطع تقارب 30 ثانية، ولا يحتاج تقطيع الملف يدويًا. <strong>سيب المتصفح مفتوح والشاشة شغالة</strong> لحد ما يخلص. التفريغ الطويل ممكن يكون بطيئًا جدًا على بعض الموبايلات.</p>
+</section>
+<section class="card"><h2>② حالة التفريغ</h2><div class="status" id="status" role="status" aria-live="polite">جاهز لاختيار التسجيل.</div><progress id="progress" max="100" value="0"></progress><p class="note" id="saveinfo">✅ بيحفظ النص المكتمل بعد كل جزء على المتصفح المحلي؛ لو الصفحة اتقفلت، تقدر تختار نفس الملف وتكمل. ممكن تفقد النسخة المحفوظة لو مسحت بيانات المتصفح.</p></section>
+<section class="card"><h2>③ النص الإنجليزي <span class="pill">Editable</span></h2><textarea id="transcript" lang="en" spellcheck="false" placeholder="English transcript will appear here, part by part..."></textarea><div class="actions"><button id="copy" disabled>📋 نسخ</button><button id="docx" disabled>📄 Word (.docx)</button><button id="txt" disabled>⬇ TXT</button><button id="srt" disabled>⬇ SRT</button></div><p class="note">تقدر تحمّل ملف Word في أي وقت بعد ظهور أول جزء من النص، حتى لو باقي التسجيل لم يكتمل. راجع المصطلحات العلمية والأسماء والأرقام بعد التفريغ.</p></section>
+<footer>🔒 التسجيل يُعالَج على جهازك فقط ولا يُرفع إلى GitHub. تُحمَّل المكتبات ونماذج الذكاء الاصطناعي من خدمات عامة، لذلك يحتاج التطبيق لاتصال إنترنت في البداية. بعض صيغ الترميز قد لا يدعمها جهازك.</footer>
+</main>
+<script type="module">
+const $=id=>document.getElementById(id);
+const fileInput=$('audiofile'),start=$('start'),stop=$('stop'),model=$('model'),status=$('status'),progress=$('progress'),textBox=$('transcript');
+let selected=null,previewUrl=null,running=false,cancelRequested=false,totalDuration=0,lastSegments=[],parts=[],lastDone=0,transcriber=null,currentModel=null;
+const CHUNK_SECONDS=30; // Keep memory bounded for hour-long lectures.
+let libraries=null;
+const cacheKey=()=>selected?'lecture-transcript-v3:'+selected.name+':'+selected.size+':'+selected.lastModified+':'+model.value:null;
+function show(message,pct=null){status.textContent=message;if(pct===null||!Number.isFinite(pct)){progress.style.display='none';return;}progress.style.display='block';progress.value=Math.max(0,Math.min(100,pct));}
+function buttons(){const has=!!textBox.value.trim();for(const id of ['copy','docx','txt','srt'])$(id).disabled=!has;}
+function save(){if(!selected)return;try{localStorage.setItem(cacheKey(),JSON.stringify({at:lastDone,parts,segments:lastSegments,text:textBox.value}));}catch(e){$('saveinfo').textContent='⚠️ لم تكفِ مساحة التخزين المحلي. نزّل نسخة Word لحفظ النص المكتمل.';}}
+function restore(){parts=[];lastSegments=[];lastDone=0;textBox.value='';try{const saved=JSON.parse(localStorage.getItem(cacheKey())||'null');if(saved&&typeof saved.at==='number'&&saved.at>0){parts=Array.isArray(saved.parts)?saved.parts:[];lastSegments=Array.isArray(saved.segments)?saved.segments:[];lastDone=saved.at;textBox.value=String(saved.text||parts.map(x=>x.text).join('\n\n'));show('✅ وجدت أجزاء محفوظة من نفس التسجيل. اضغط «ابدأ» لاستكمال التفريغ من '+formatTime(lastDone)+'.');}}catch(e){console.warn(e);}buttons();}
+function formatTime(s){s=Math.max(0,Math.floor(s||0));return String(Math.floor(s/3600)).padStart(2,'0')+':'+String(Math.floor(s%3600/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+fileInput.addEventListener('change',()=>{if(running)return;selected=fileInput.files?.[0]||null;if(previewUrl)URL.revokeObjectURL(previewUrl);textBox.value='';parts=[];lastSegments=[];lastDone=0;totalDuration=0;if(!selected){$('filemeta').textContent='لم يتم اختيار ملف';$('preview').style.display='none';start.disabled=true;buttons();show('جاهز لاختيار التسجيل.');return;}previewUrl=URL.createObjectURL(selected);$('preview').src=previewUrl;$('preview').style.display='block';$('filemeta').textContent=selected.name+' — '+(selected.size/1048576).toFixed(1)+' MB';start.disabled=false;restore();if(!lastDone)show('الملف جاهز. اضغط ابدأ التفريغ.');});
+model.addEventListener('change',()=>{if(!running&&selected)restore();});
+stop.addEventListener('click',()=>{cancelRequested=true;stop.disabled=true;show('⏹ هوقف بعد الانتهاء من معالجة الجزء الحالي. النص المكتمل محفوظ.',totalDuration?lastDone/totalDuration*100:null);});
+function baseName(){return(selected?.name||'Lecture_Transcript').replace(/\.[^.]+$/,'').replace(/[^\w .-]/g,'_')||'Transcript';}
+function download(name,content,type='text/plain;charset=utf-8'){const b=content instanceof Blob?content:new Blob([content],{type});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),30000);}
+function srtStamp(seconds){const ms=Math.max(0,Math.round((Number(seconds)||0)*1000));return formatTime(ms/1000)+','+String(ms%1000).padStart(3,'0');}
+function escapeXml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');}
+async function exportWord(){if(!textBox.value.trim())return;const b=$('docx');b.disabled=true;b.textContent='جاري تجهيز Word…';try{
+ const m=await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm');const JSZip=m.default;
+ const zip=new JSZip();const heading='English Lecture Transcript';
+ const paragraphs=[heading,`Source: ${selected?.name||'Audio recording'}`,'',...textBox.value.split(/\r?\n/)];
+ const content=paragraphs.map((p,i)=>`<w:p><w:pPr><w:spacing w:after="${i===0?260:120}"/></w:pPr><w:r><w:rPr>${i===0?'<w:b/><w:sz w:val="32"/>':'<w:sz w:val="22"/>'}</w:rPr><w:t xml:space="preserve">${escapeXml(p)}</w:t></w:r></w:p>`).join('');
+ zip.file('[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+ zip.folder('_rels').file('.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+ zip.folder('word').file('document.xml',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${content}<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1200" w:right="1100" w:bottom="1200" w:left="1100"/></w:sectPr></w:body></w:document>`);
+ const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE'});download(baseName()+'.docx',blob);
+ show('✅ تم إعداد ملف Word وتحميله إلى Downloads.',totalDuration?lastDone/totalDuration*100:null);
+ }catch(e){console.error(e);show('تعذر إنشاء Word: '+(e.message||String(e))+'. يمكنك تنزيل TXT كبديل.');}finally{b.textContent='📄 Word (.docx)';buttons();}}
+$('docx').addEventListener('click',exportWord);
+$('txt').addEventListener('click',()=>download(baseName()+'.txt',textBox.value+'\n'));
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(textBox.value);show('✅ تم نسخ النص.');}catch(e){textBox.focus();textBox.select();show('النص اتحدد. اضغط نسخ من قائمة الموبايل.');}});
+$('srt').addEventListener('click',()=>{const captions=(lastSegments.length?lastSegments:[{text:textBox.value,start:0,end:Math.max(1,totalDuration)}]).map((p,i)=>`${i+1}\n${srtStamp(p.start)} --> ${srtStamp(Math.max((p.start||0)+0.2,p.end||p.start+1))}\n${String(p.text||'').trim()}\n`).join('\n');download(baseName()+'.srt',captions,'application/x-subrip;charset=utf-8');});
+textBox.addEventListener('input',()=>{buttons();save();});
+function progressModel(p){if(p.status==='progress'&&typeof p.progress==='number')show('تحميل نموذج Whisper: '+Math.round(p.progress)+'% (المرة الأولى فقط)',p.progress);else if(p.status==='initiate')show('تحميل الملفات اللازمة للنموذج…');}
+// Native-rate PCM is never accumulated for more than a short chunk.
+function resampleParts(chunks,frames,rate){const combined=new Float32Array(frames);let cursor=0;for(const chunk of chunks){combined.set(chunk,cursor);cursor+=chunk.length;}if(rate===16000)return combined;const count=Math.max(1,Math.round(frames*16000/rate)),out=new Float32Array(count);const ratio=rate/16000;for(let i=0;i<count;i++){const s=i*ratio,j=Math.floor(s),t=s-j;out[i]=combined[Math.min(j,frames-1)]*(1-t)+combined[Math.min(j+1,frames-1)]*t;}return out;}
+async function getLibraries(){if(!libraries){show('جاري تحميل أداة قراءة ملفات الصوت…');libraries=Promise.all([import('https://cdn.jsdelivr.net/npm/mediabunny@1.61.6/+esm'),import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1')]).catch(e=>{libraries=null;throw e;});}return libraries;}
+async function getTranscriber(pipeline){if(transcriber&&currentModel===model.value)return transcriber;transcriber=null;currentModel=null;show('جاري تجهيز نموذج Whisper الإنجليزي…');transcriber=await pipeline('automatic-speech-recognition',model.value,{device:'wasm',progress_callback:progressModel});currentModel=model.value;return transcriber;}
+async function recognize(pcm,begin,end,pipeline){show(`🎙️ جاري تفريغ الجزء ${formatTime(begin)} → ${formatTime(end)}…`,totalDuration?begin/totalDuration*100:null);
+ const asr=await getTranscriber(pipeline);
+ const r=await asr(pcm,{chunk_length_s:25,stride_length_s:4,return_timestamps:true,language:'english',task:'transcribe'});
+ const o=Array.isArray(r)?r[0]:r,phrase=String(o?.text||'').trim();
+ if(phrase){parts.push({text:phrase,start:begin,end});textBox.value+=(textBox.value?'\n\n':'')+phrase;}
+ const chunks=Array.isArray(o?.chunks)?o.chunks:[];
+ if(chunks.length){for(const p of chunks){const a=Number(p.timestamp?.[0]),b=Number(p.timestamp?.[1]);if(String(p.text||'').trim())lastSegments.push({text:String(p.text).trim(),start:begin+(Number.isFinite(a)?a:0),end:begin+(Number.isFinite(b)?b:Math.max(0,end-begin))});}}
+ else if(phrase)lastSegments.push({text:phrase,start:begin,end});
+ lastDone=end;save();buttons();show(`✅ اكتمل حتى ${formatTime(lastDone)} من ${formatTime(totalDuration)}. يمكنك تنزيل Word في أي لحظة.`,totalDuration?lastDone/totalDuration*100:null);
+}
+start.addEventListener('click',async()=>{if(!selected||running)return;running=true;cancelRequested=false;start.disabled=true;stop.disabled=false;fileInput.disabled=true;model.disabled=true;let input=null;
+ try{
+  const [media,{pipeline}]=await getLibraries();
+  input=new media.Input({formats:media.ALL_FORMATS,source:new media.BlobSource(selected)});
+  const track=await input.getPrimaryAudioTrack();if(!track)throw Error('الملف لا يحتوي على مسار صوتي يمكن قراءته.');
+  if(!(await track.canDecode()))throw Error('صيغة الصوت أو الترميز غير مدعومة على هذا المتصفح. جرّب تحويل الملف إلى M4A/AAC أو MP3.');
+  totalDuration=await input.computeDuration();if(!Number.isFinite(totalDuration)||totalDuration<=0)throw Error('تعذر تحديد مدة الصوت.');
+  if(lastDone>=totalDuration-1){show('✅ كل التسجيل مكتمل بالفعل. تقدر تنزّله Word الآن.',100);return;}
+  await getTranscriber(pipeline);
+  const sink=new media.AudioSampleSink(track);let frames=0,pieces=[],sr=null,begin=lastDone,chunkEnd=lastDone,processed=0;
+  show(`جاري قراءة التسجيل من ${formatTime(begin)}…`,begin/totalDuration*100);
+  for await(const sample of sink.samples(begin)){
+   if(cancelRequested)break;
+   try{
+    const rate=sample.sampleRate,channels=sample.numberOfChannels,count=sample.numberOfFrames;
+    if(!Number.isFinite(rate)||rate<=0||channels<1)throw Error('تعذر فك ترميز الصوت.');
+    if(sr!==null&&sr!==rate)throw Error('تغيّر تردد الصوت أثناء القراءة.');sr=rate;
+    // Avoid duplicated decoded frames when resuming at a stored checkpoint.
+    const skip=Math.max(0,Math.min(count,Math.ceil((begin-sample.timestamp)*rate-0.0001)));
+    if(skip>=count)continue;
+    const mono=new Float32Array(count-skip);
+    for(let c=0;c<channels;c++){
+     const plane=new Float32Array(count);sample.copyTo(plane,{format:'f32-planar',planeIndex:c});
+     for(let i=skip;i<count;i++)mono[i-skip]+=plane[i]/channels;
+    }
+    pieces.push(mono);frames+=mono.length;chunkEnd=sample.timestamp+sample.duration;
+   }finally{sample.close();}
+   if(frames>=sr*CHUNK_SECONDS){const samples=resampleParts(pieces,frames,sr);pieces=[];frames=0;await recognize(samples,begin,chunkEnd,pipeline);begin=lastDone;processed++;}
+  }
+  if(!cancelRequested&&frames>0){await recognize(resampleParts(pieces,frames,sr),begin,chunkEnd,pipeline);}
+  if(cancelRequested)show(`⏹ متوقف عند ${formatTime(lastDone)}. اختار نفس الملف واضغط ابدأ للاستكمال. تقدر تنزّل Word الآن.`,lastDone/totalDuration*100);
+  else show(`✅ اكتمل التفريغ: ${formatTime(totalDuration)}. حمّل Word (.docx) بالزر الأخضر.`,100);
+ }catch(e){console.error(e);show('❌ تعذر الاستمرار: '+(e?.message||String(e))+'\nالنص المكتمل، إن وجد، ما زال متاحًا للتنزيل. جرّب فتح الرابط داخل Chrome بدل متصفح التطبيق.',totalDuration?lastDone/totalDuration*100:null);}
+ finally{input?.dispose();running=false;start.disabled=!selected;stop.disabled=true;fileInput.disabled=false;model.disabled=false;buttons();}
+});
+</script>
+</body></html>
